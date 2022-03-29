@@ -52,21 +52,25 @@ function playRound(playerSelection, computerSelection){
     return([winVal, playerSelection, computerSelection]);
 }
 
+function capitalizeFirstLetter(string){
+    return string[0].toUpperCase() + string.substring(1);
+}
 
 function game(){
     // playerResults and compResults are used to iterate wins for the player and computer respectively
     let playerResults = 0;
     let compResults = 0;
     for(let i = 0; i < 5; i++){
-        // playRound returns an array with the results, the player's selection, and then the computer's selection
+        // playRound returns an array with the results (array[0]),
+        // the player's selection array[1], and then the computer's selection array[2]
         let array = playRound(playerPlay(), computerPlay());
 
         if(array[0] === 0){
-            alert("You lost! " + array[2] + " beats " + array[1] + ".");
+            alert("You lost! " + capitalizeFirstLetter(array[2]) + " beats " + array[1] + ".");
             compResults++;
         }
         else if(array[0] === 1){
-            alert("You won! " + array[1] + " beats " + array[2] + ".");
+            alert("You won! " + capitalizeFirstLetter(array[1]) + " beats " + array[2] + ".");
             playerResults++;
         }
         else if (array[0] === 2){
