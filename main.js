@@ -2,29 +2,24 @@ function computerPlay(){
     // Will return a random integer, either 1, 2, or 3
     let randInt = Math.floor(Math.random() * 3) + 1;
     if(randInt === 1){
-        console.log("computer: Rock");
         return "rock";
     }
     else if(randInt === 2){
-        console.log("computer: Paper");
         return "paper";
     }
     else if(randInt === 3){
-        console.log("computer: Scissors");
         return "scissors";
     }
 }
 
 
 function playerPlay(){
-    console.log("playerPlay called");
     let invalidSelection = true;
     let playerSelection;
     while(invalidSelection){
         playerSelection = (prompt("What would you like to do?: ")).toLowerCase();
         if(playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors"){
             alert("Invalid entry, please try again. (Valid entries are \"Rock\", \"Paper\", or \"Scissors\".");
-            console.log("Player selection: " + playerSelection);
         }
         else{
             invalidSelection = false;
@@ -36,27 +31,50 @@ function playerPlay(){
 
 function playRound(playerSelection, computerSelection){
     if(playerSelection === computerSelection){
-        alert("You have tied! Try again.");
-        playRound(playerPlay(), computerPlay());
+        return([2, playerSelection, computerSelection]);
     }
     else if (playerSelection === "rock" && computerSelection === "paper"){
-        alert("You have lost! Paper beats rock.");
+        return([0, playerSelection, computerSelection]);
     }
     else if (playerSelection === "rock" && computerSelection === "scissors"){
-        alert("You have won! Rock beats scissors.");
+        return([1, playerSelection, computerSelection]);
     }
     else if (playerSelection === "paper" && computerSelection === "scissors"){
-        alert("You have lost! Scissors beats paper.");
+        return([0, playerSelection, computerSelection]);
     }
     else if (playerSelection === "paper" && computerSelection === "rock"){
-        alert("You have won! Paper beats rock.");
+        return([1, playerSelection, computerSelection]);
     }
     else if (playerSelection === "scissors" && computerSelection === "paper"){
-        alert("You have won! Scissors beats paper.");
+        return([1, playerSelection, computerSelection]);
     }
     else if (playerSelection === "scissors" && computerSelection === "rock"){
-        alert("You have lost! Rock beats scissors.");
+        return([0, playerSelection, computerSelection]);
     }
 }
 
-playRound(playerPlay(), computerPlay());
+
+function game(){
+    let playerResults = 0;
+    let compResults = 0;
+    for(let i = 0; i < 5; i++){
+        let array = playRound(playerPlay(), computerPlay());
+        if(array[0] === 0){
+            alert("You lost! " + array[2] + " beats " + array[1] + ".");
+            compResults++;
+        }
+        else if(array[0] === 1){
+            alert("You won! " + array[1] + " beats " + array[2] + ".");
+            playerResults++;
+        }
+        else if (array[0] === 2){
+            alert("You tied!");
+            playerResults += .5;
+            compResults += .5;
+        }
+    }
+    console.log("Final score: \nPlayer wins: " +
+      playerResults + "\nComputer wins: " + compResults);
+}
+
+game();
