@@ -1,15 +1,13 @@
 function computerPlay(){
     // Will return a random integer, either 1, 2, or 3
     let randInt = Math.floor(Math.random() * 3) + 1;
-    if(randInt === 1){
+    if(randInt === 1)
         return "rock";
-    }
-    else if(randInt === 2){
+    else if(randInt === 2)
         return "paper";
-    }
-    else if(randInt === 3){
+    else if(randInt === 3)
         return "scissors";
-    }
+    
 }
 
 
@@ -35,27 +33,23 @@ function playRound(playerSelection, computerSelection){
     // If there is a tie, a 2 is returned
     // If the player loses, a 0 is returned
     // If the player wins, a 1 is returned
-    if(playerSelection === computerSelection){
-        return([2, playerSelection, computerSelection]);
-    }
-    else if (playerSelection === "rock" && computerSelection === "paper"){
-        return([0, playerSelection, computerSelection]);
-    }
-    else if (playerSelection === "rock" && computerSelection === "scissors"){
-        return([1, playerSelection, computerSelection]);
-    }
-    else if (playerSelection === "paper" && computerSelection === "scissors"){
-        return([0, playerSelection, computerSelection]);
-    }
-    else if (playerSelection === "paper" && computerSelection === "rock"){
-        return([1, playerSelection, computerSelection]);
-    }
-    else if (playerSelection === "scissors" && computerSelection === "paper"){
-        return([1, playerSelection, computerSelection]);
-    }
-    else if (playerSelection === "scissors" && computerSelection === "rock"){
-        return([0, playerSelection, computerSelection]);
-    }
+    let winVal = -1;
+    if(playerSelection === computerSelection)
+        winVal = 2;
+    else if (playerSelection === "rock" && computerSelection === "paper")
+        winVal = 0;
+    else if (playerSelection === "rock" && computerSelection === "scissors")
+        winVal = 1;
+    else if (playerSelection === "paper" && computerSelection === "scissors")
+        winVal = 0;
+    else if (playerSelection === "paper" && computerSelection === "rock")
+        winVal = 1;
+    else if (playerSelection === "scissors" && computerSelection === "paper")
+        winVal = 1;
+    else if (playerSelection === "scissors" && computerSelection === "rock")
+        winVal = 0;
+
+    return([winVal, playerSelection, computerSelection]);
 }
 
 
@@ -79,6 +73,9 @@ function game(){
             alert("You tied!");
             playerResults += .5;
             compResults += .5;
+        }
+        else{
+            alert("Error!");
         }
     }
     console.log("Final score: \nPlayer wins: " +
