@@ -17,7 +17,9 @@ function playerPlay(){
     let invalidSelection = true;
     let playerSelection;
     while(invalidSelection){
+        // The player selection will always be normalized to all lower case letters
         playerSelection = (prompt("What would you like to do?: ")).toLowerCase();
+        // If there is an invalid selection, the while loop continues
         if(playerSelection !== "rock" && playerSelection !== "paper" && playerSelection !== "scissors"){
             alert("Invalid entry, please try again. (Valid entries are \"Rock\", \"Paper\", or \"Scissors\".");
         }
@@ -30,6 +32,9 @@ function playerPlay(){
 
 
 function playRound(playerSelection, computerSelection){
+    // If there is a tie, a 2 is returned
+    // If the player loses, a 0 is returned
+    // If the player wins, a 1 is returned
     if(playerSelection === computerSelection){
         return([2, playerSelection, computerSelection]);
     }
@@ -55,10 +60,13 @@ function playRound(playerSelection, computerSelection){
 
 
 function game(){
+    // playerResults and compResults are used to iterate wins for the player and computer respectively
     let playerResults = 0;
     let compResults = 0;
     for(let i = 0; i < 5; i++){
+        // playRound returns an array with the results, the player's selection, and then the computer's selection
         let array = playRound(playerPlay(), computerPlay());
+
         if(array[0] === 0){
             alert("You lost! " + array[2] + " beats " + array[1] + ".");
             compResults++;
@@ -77,4 +85,5 @@ function game(){
       playerResults + "\nComputer wins: " + compResults);
 }
 
+// Call the gameplay loop
 game();
