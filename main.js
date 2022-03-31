@@ -1,20 +1,29 @@
 function uiElements(){
+
     const container = document.querySelector(".container");
 
-    const rockButton = document.createElement("button");
-    rockButton.textContent = "Rock";
+    const buttonContainer = document.createElement("div");
+    const resultsContainer = document.createElement("div");
 
+    const rockButton = document.createElement("button");
+    rockButton.textContent = "Rock"
     const paperButton = document.createElement("button");
     paperButton.textContent = "Paper";
-
     const scissorsButton = document.createElement("button");
     scissorsButton.textContent = "Scissors";
 
+    const resultsText = document.createElement("p");
+    resultsText.textContent = "These are the results";
+    resultsText.classList.toggle("displayResults");
 
+    container.appendChild(buttonContainer);
+    container.appendChild(resultsContainer);
 
-    container.appendChild(rockButton);
-    container.appendChild(paperButton);
-    container.appendChild(scissorsButton);
+    buttonContainer.appendChild(rockButton);
+    buttonContainer.appendChild(paperButton);
+    buttonContainer.appendChild(scissorsButton);
+
+    resultsContainer.appendChild(resultsText);
 
 }
 
@@ -33,6 +42,7 @@ function computerPlay(){
 
 
 function playRound(playerSelection, computerSelection){
+    // Purely for testing purposes
     console.log("Player selection: " + playerSelection);
     console.log("Computer selection: " + computerSelection);
 
@@ -61,44 +71,50 @@ function playRound(playerSelection, computerSelection){
 }
 
 
-function scoreCount(array){
-    // playerResults and compResults are used to iterate wins for the player and computer respectively
-    let playerResults = 0;
-    let compResults = 0;
+function scoreDisplay(array, playerResults, compResults){
+    const ongoingResults = document.querySelector(".displayResults");
 
     if(array[0] === 0){
-        alert("You lost! " + array[2] + " beats " + array[1] + ".");
+        ongoingResults.textContent = "You lost! " + array[2] + " beats " + array[1] + ".";
         compResults++;
     }
     else if(array[0] === 1){
-        alert("You won! " + array[1] + " beats " + array[2] + ".");
+        ongoingResults.textContent = "You won! " + array[1] + " beats " + array[2] + ".";
         playerResults++;
     }
     else if (array[0] === 2){
-        alert("You tied!");
+        ongoingResults.textContent = "You tied!";
         playerResults += .5;
         compResults += .5;
     }
     else{
-        alert("Error!");
+        ongoingResults.textContent = "Error!";
     }
     
+    // Purely for testing purposes
     console.log("Final score: \nPlayer wins: " +
       playerResults + "\nComputer wins: " + compResults);
+
+    return ([playerResults, compResults]);
 }
 
 function game(){
+    // playerResults and compResults are used to iterate wins for the player and computer respectively
+    let results = [];
+    let playerResults = 0;
+    let compResults = 0;
 
-    // playRound returns an array with the results (array[0]),
-    // the player's selection array[1], and then the computer's selection array[2]
     let array = [];
     
     const buttons = document.querySelectorAll('button');
     buttons.forEach((button) => {
        button.addEventListener('click', function(e){
-        console.log(e.target.innerText);
+        // playRound returns an array with the results (array[0]),
+        // the player's selection array[1], and then the computer's selection array[2]
         array = playRound(e.target.innerText, computerPlay())
-        scoreCount(array);
+        results = scoreDisplay(array, playerResults, compResults);
+        playerResults = results[0];
+        compResults = results[1];
         });
     });
 }
