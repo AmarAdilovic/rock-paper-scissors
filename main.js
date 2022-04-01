@@ -7,23 +7,35 @@ function uiElements(){
 
     const rockButton = document.createElement("button");
     rockButton.textContent = "Rock"
+    rockButton.setAttribute("id", "rockSelection");
     const paperButton = document.createElement("button");
     paperButton.textContent = "Paper";
     const scissorsButton = document.createElement("button");
     scissorsButton.textContent = "Scissors";
 
     const resultsText = document.createElement("p");
-    resultsText.textContent = "These are the results";
+    resultsText.textContent = "Press a button to play!";
     resultsText.classList.toggle("displayResults");
 
-    container.appendChild(buttonContainer);
-    container.appendChild(resultsContainer);
+    const playerResults = document.createElement("p");
+    playerResults.textContent = "Player score: ";
+    playerResults.classList.toggle("playerWinNum");
+
+    const compResults = document.createElement("p");
+    compResults.textContent = "Computer score: ";
+    compResults.classList.toggle("compWinNum");
 
     buttonContainer.appendChild(rockButton);
     buttonContainer.appendChild(paperButton);
     buttonContainer.appendChild(scissorsButton);
 
     resultsContainer.appendChild(resultsText);
+    resultsContainer.appendChild(playerResults);
+    resultsContainer.appendChild(compResults);
+
+    container.appendChild(buttonContainer);
+    container.appendChild(resultsContainer);
+
 
 }
 
@@ -101,6 +113,8 @@ function scoreDisplay(array, playerResults, compResults){
 function game(){
     // playerResults and compResults are used to iterate wins for the player and computer respectively
     let results = [];
+    const playerWins = document.querySelector(".playerWinNum");
+    const compWins = document.querySelector(".compWinNum");
     let playerResults = 0;
     let compResults = 0;
 
@@ -114,12 +128,26 @@ function game(){
         array = playRound(e.target.innerText, computerPlay())
         results = scoreDisplay(array, playerResults, compResults);
         playerResults = results[0];
+        playerWins.textContent = "Player score: " + results[0];
+        compWins.textContent = "Computer score: " + results[1];
         compResults = results[1];
         });
     });
+
 }
-
-
 uiElements();
 // Call the gameplay loop
 game();
+
+function testGame(amountOfClicks){
+    const clickRock = document.getElementById("rockSelection");
+    for(let i = 0; i < amountOfClicks; i++){
+        clickRock.click();
+    }
+
+    const playerWins = document.querySelector(".playerWinNum");
+    
+    return(playerWins.textContent);
+}
+
+testGame(500);
