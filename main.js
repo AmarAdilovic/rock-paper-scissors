@@ -54,10 +54,6 @@ function computerPlay(){
 
 
 function playRound(playerSelection, computerSelection){
-    // Purely for testing purposes
-    console.log("Player selection: " + playerSelection);
-    console.log("Computer selection: " + computerSelection);
-
     // If there is a tie, a 2 is returned
     // If the player loses, a 0 is returned
     // If the player wins, a 1 is returned
@@ -77,24 +73,23 @@ function playRound(playerSelection, computerSelection){
     else if (playerSelection === "Scissors" && computerSelection === "Rock")
         winVal = 0;
 
-    console.log("Win value: " + winVal);
 
     return([winVal, playerSelection, computerSelection]);
 }
 
 
-function scoreDisplay(array, playerResults, compResults){
+function scoreDisplay([winVal, playerSelection, computerSelection], playerResults, compResults){
     const ongoingResults = document.querySelector(".displayResults");
 
-    if(array[0] === 0){
-        ongoingResults.textContent = "You lost! " + array[2] + " beats " + array[1] + ".";
+    if(winVal === 0){
+        ongoingResults.textContent = "You lost! " + computerSelection + " beats " + playerSelection + ".";
         compResults++;
     }
-    else if(array[0] === 1){
-        ongoingResults.textContent = "You won! " + array[1] + " beats " + array[2] + ".";
+    else if(winVal === 1){
+        ongoingResults.textContent = "You won! " + playerSelection + " beats " + computerSelection + ".";
         playerResults++;
     }
-    else if (array[0] === 2){
+    else if (winVal === 2){
         ongoingResults.textContent = "You tied!";
         playerResults += .5;
         compResults += .5;
@@ -103,34 +98,29 @@ function scoreDisplay(array, playerResults, compResults){
         ongoingResults.textContent = "Error!";
     }
     
-    // Purely for testing purposes
-    console.log("Final score: \nPlayer wins: " +
-      playerResults + "\nComputer wins: " + compResults);
 
-    return ([playerResults, compResults]);
+    return [playerResults, compResults];
 }
 
 function game(){
     // playerResults and compResults are used to iterate wins for the player and computer respectively
-    let results = [];
     const playerWins = document.querySelector(".playerWinNum");
     const compWins = document.querySelector(".compWinNum");
     let playerResults = 0;
     let compResults = 0;
 
-    let array = [];
+    let roundResult = [];
     
     const buttons = document.querySelectorAll('button');
     buttons.forEach((button) => {
        button.addEventListener('click', function(e){
-        // playRound returns an array with the results (array[0]),
-        // the player's selection array[1], and then the computer's selection array[2]
-        array = playRound(e.target.innerText, computerPlay())
-        results = scoreDisplay(array, playerResults, compResults);
-        playerResults = results[0];
-        playerWins.textContent = "Player score: " + results[0];
-        compWins.textContent = "Computer score: " + results[1];
-        compResults = results[1];
+        // playRound returns an array with the results (roundResult[0]),
+        // the player's selection roundResult[1], and then the computer's selection roundResult[2]
+
+        roundResult = playRound(e.target.innerText, computerPlay());
+        [playerResults, compResults] = scoreDisplay(roundResult, playerResults, compResults);
+        playerWins.textContent = "Player score: " + playerResults;
+        compWins.textContent = "Computer score: " + compResults;
         });
     });
 
@@ -147,7 +137,5 @@ function testGame(amountOfClicks){
 
     const playerWins = document.querySelector(".playerWinNum");
     
-    return(playerWins.textContent);
+    return playerWins.textContent;
 }
-
-testGame(500);
